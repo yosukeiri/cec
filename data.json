@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1001,
+    "schoolName": "赤色大学",
+    "applicationDeadline": "1/15/23",
+    "entranceExamDate": "2/5/23",
+    "announcementDate": "2/15/23",
+    "paymentDeadline": "3/10/23",
+    "area": "北海道",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/01.jpg",
+    "title": "赤色テスト",
+    "text": "赤色赤色赤色赤色赤色赤色赤色赤色"
+  },
+  {
+    "id": 1002,
+    "schoolName": "青色大学",
+    "applicationDeadline": "1/16/23",
+    "entranceExamDate": "2/6/23",
+    "announcementDate": "2/16/23",
+    "paymentDeadline": "3/11/23",
+    "area": "東京都",
+    "subjects": {
+      "s01": true,
+      "s02": false,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/02.jpg",
+    "title": "青色テスト",
+    "text": "青色青色青色青色青色青色青色青色"
+  },
+  {
+    "id": 1004,
+    "schoolName": "黄色大学",
+    "applicationDeadline": "1/17/23",
+    "entranceExamDate": "2/7/23",
+    "announcementDate": "2/17/23",
+    "paymentDeadline": "3/12/23",
+    "area": "東京都",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": true,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/03.jpg",
+    "title": "黄色テスト",
+    "text": "黄色黄色黄色黄色黄色黄色黄色黄色"
+  },
+  {
+    "id": 1005,
+    "schoolName": "緑色大学",
+    "applicationDeadline": "1/18/23",
+    "entranceExamDate": "2/8/23",
+    "announcementDate": "2/18/23",
+    "paymentDeadline": "3/13/23",
+    "area": "大阪府",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": false,
+      "s04": true,
+      "s05": true
+    },
+    "image": "/schoolImage/04.jpg",
+    "title": "緑色テスト",
+    "text": "緑色緑色緑色緑色緑色緑色緑色緑色"
+  },
+  {
+    "id": 1006,
+    "schoolName": "黒色大学",
+    "applicationDeadline": "1/19/23",
+    "entranceExamDate": "2/9/23",
+    "announcementDate": "2/19/23",
+    "paymentDeadline": "3/14/23",
+    "area": "福岡県",
+    "subjects": {
+      "s01": false,
+      "s02": true,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/05.jpg",
+    "title": "黒色てすと",
+    "text": "黒色黒色黒色黒色黒色黒色黒色黒色"
+  },
+  {
+    "id": 1007,
+    "schoolName": "赤色大学",
+    "applicationDeadline": "1/15/23",
+    "entranceExamDate": "2/5/23",
+    "announcementDate": "2/15/23",
+    "paymentDeadline": "3/10/23",
+    "area": "北海道",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/01.jpg",
+    "title": "赤色テスト",
+    "text": "赤色赤色赤色赤色赤色赤色赤色赤色"
+  },
+  {
+    "id": 1008,
+    "schoolName": "青色大学",
+    "applicationDeadline": "1/16/23",
+    "entranceExamDate": "2/6/23",
+    "announcementDate": "2/16/23",
+    "paymentDeadline": "3/11/23",
+    "area": "北海道",
+    "subjects": {
+      "s01": true,
+      "s02": false,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/02.jpg",
+    "title": "青色テスト",
+    "text": "青色青色青色青色青色青色青色青色"
+  },
+  {
+    "id": 1009,
+    "schoolName": "黄色大学",
+    "applicationDeadline": "1/17/23",
+    "entranceExamDate": "2/7/23",
+    "announcementDate": "2/17/23",
+    "paymentDeadline": "3/12/23",
+    "area": "東京都",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": true,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/03.jpg",
+    "title": "黄色テスト",
+    "text": "黄色黄色黄色黄色黄色黄色黄色黄色"
+  },
+  {
+    "id": 1010,
+    "schoolName": "緑色大学",
+    "applicationDeadline": "1/18/23",
+    "entranceExamDate": "2/8/23",
+    "announcementDate": "2/18/23",
+    "paymentDeadline": "3/13/23",
+    "area": "大阪府",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": false,
+      "s04": true,
+      "s05": true
+    },
+    "image": "/schoolImage/04.jpg",
+    "title": "緑色テスト",
+    "text": "緑色緑色緑色緑色緑色緑色緑色緑色"
+  },
+  {
+    "id": 1011,
+    "schoolName": "赤色大学",
+    "applicationDeadline": "1/15/23",
+    "entranceExamDate": "2/5/23",
+    "announcementDate": "2/15/23",
+    "paymentDeadline": "3/10/23",
+    "area": "北海道",
+    "subjects": {
+      "s01": true,
+      "s02": true,
+      "s03": false,
+      "s04": false,
+      "s05": true
+    },
+    "image": "/schoolImage/05.jpg",
+    "title": "赤色テスト",
+    "text": "赤色赤色赤色赤色赤色赤色赤色赤色"
+  }
+]
