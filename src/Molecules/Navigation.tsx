@@ -1,5 +1,5 @@
 import { Button, HStack, Spacer } from "@chakra-ui/react";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useAuthContext } from "../context/AuthContext";
@@ -39,17 +39,31 @@ const Navigation = () => {
   return (
     <>
       {user ? (
-        <HStack w="450px" spacing="5" justify="end">
+        <HStack w={["100%", "450px"]} spacing="5" justify="end">
           <Link href="/mypage">マイページ</Link>
           <Link href="/search">学校検索</Link>
           <Button onClick={signout}>サインアウト</Button>
         </HStack>
       ) : (
-        <HStack w="250px" spacing="5" justify="end">
-          <Button as="a" href="/signup" bg="#aaaaaa" color="#fff" p="5px 10px">
+        <HStack w={["170px", "250px"]} spacing={["2", "5"]} justify="end">
+          <Button
+            as="a"
+            href="/signup"
+            bg="#aaaaaa"
+            color="#fff"
+            p={["2px 5px", "5px 10px"]}
+            size={["xs", "sm", "md"]}
+          >
             サインアップ
           </Button>
-          <Button as="a" href="/signin" bg="#aaaaaa" color="#fff" p="5px 10px">
+          <Button
+            as="a"
+            href="/signin"
+            bg="#aaaaaa"
+            color="#fff"
+            p={["2px 5px", "5px 10px"]}
+            size={["xs", "sm", "md"]}
+          >
             サインイン
           </Button>
         </HStack>

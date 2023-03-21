@@ -6,7 +6,12 @@ const Layout = ({ children }: any) => {
     <>
       <Header />
       <Flex justify="center">
-        <Container as="main" maxW="1024px" px="0" py="50px">
+        <Container
+          as="main"
+          maxW={["100%", "1024px"]}
+          px={["5", "10", "20", "0"]}
+          py={["10px", "50px"]}
+        >
           {children}
         </Container>
       </Flex>

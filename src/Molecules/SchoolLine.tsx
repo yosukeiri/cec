@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Button,
   Tr,
@@ -15,7 +16,13 @@ import {
 } from "@chakra-ui/react";
 import Data from "../../data.json";
 import Image from "next/image";
-import { collection, Timestamp, doc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -26,15 +33,39 @@ type PROPS = {
 const SchoolLine = (props: PROPS) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useAuthContext();
-
+  const [registered, setRegistered] = useState(false);
+  const [refDoc, setRefDoc] = useState(doc(db, "userSchool", user.uid));
   const date01 = new Date(props.school.applicationDeadline);
   const date02 = new Date(props.school.entranceExamDate);
   const date03 = new Date(props.school.announcementDate);
   const date04 = new Date(props.school.paymentDeadline);
 
+  useEffect(() => {
+    const f = async () => {
+      const registered_items = await getDoc(refDoc);
+      setRegistered(registered_items.data().applyFor.includes(props.school.id));
+    };
+    f();
+  }, [refDoc]);
+
   const schoolRegister = async () => {
-    console.log(user);
     try {
+      await updateDoc(refDoc, {
+        applyFor: arrayUnion(props.school.id),
+      }).then(() => {
+        setRefDoc(doc(db, "userSchool", user.uid));
+      });
+    } catch (e) {
+      alert(e);
+    }
+  };
+  const schoolRemove = async () => {
+    try {
+      await updateDoc(refDoc, {
+        applyFor: arrayRemove(props.school.id),
+      }).then(() => {
+        setRefDoc(doc(db, "userSchool", user.uid));
+      });
     } catch (e) {
       alert(e);
     }
@@ -72,16 +103,21 @@ const SchoolLine = (props: PROPS) => {
           </Button>
         </Td>
         <Td>
-          <Button colorScheme="orange" onClick={schoolRegister}>
-            登録
-          </Button>
+          {registered ? (
+            <Button colorScheme="orange" onClick={schoolRemove}>
+              削除
+            </Button>
+          ) : (
+            <Button colorScheme="green" onClick={schoolRegister}>
+              登録
+            </Button>
+          )}
         </Td>
       </Tr>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{props.school.schoolName}</ModalHeader>
-          <Text>{props.school.area}</Text>
           <Box style={{ position: "relative", width: "100%", height: "300px" }}>
             <Image
               src={props.school.image}
@@ -91,7 +127,12 @@ const SchoolLine = (props: PROPS) => {
             />
           </Box>
           <ModalCloseButton />
-          <ModalBody>{props.school.text}</ModalBody>
+          <ModalBody>
+            <Text mb="3" color="red">
+              {props.school.area}
+            </Text>
+            {props.school.text}
+          </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

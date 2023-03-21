@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import {
   Box,
   Input,
@@ -10,6 +10,7 @@ import {
   Stack,
   Flex,
   HStack,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import Data from "../../data.json";
 
@@ -78,7 +79,7 @@ const areaList = [
 
 const SearchArea = (props: any) => {
   const [data, setData] = useState<DATA>([]);
-  const { register, handleSubmit, reset } = useForm<FormDataSearch>({
+  const { register, handleSubmit, reset, control } = useForm<FormDataSearch>({
     defaultValues: {
       area: [],
     },
@@ -91,7 +92,6 @@ const SearchArea = (props: any) => {
   const onSubmitSearch: SubmitHandler<FormDataSearch> = async (condition) => {
     try {
       let result: DATA = [...data];
-      console.log(condition);
       if (condition.freeText) {
         result = result.filter((item: any) => {
           return item.schoolName.includes(condition.freeText);
@@ -158,7 +158,6 @@ const SearchArea = (props: any) => {
           );
         });
       }
-      console.log(result);
       props.setSchools(result);
     } catch (e) {
       //エラーがあったらエラー内容をアラートさせる
@@ -187,7 +186,7 @@ const SearchArea = (props: any) => {
           <Box>
             <dl>
               <dt>エリア</dt>
-              <HStack as="dd" wrap="wrap">
+              {/* <HStack as="dd" wrap="wrap">
                 {areaList.map((item: string, index: any) => {
                   return (
                     <Flex key={index} w="14.2%" align="center" pb="5">
@@ -202,7 +201,31 @@ const SearchArea = (props: any) => {
                     </Flex>
                   );
                 })}
-              </HStack>
+              </HStack> */}
+              <Controller
+                name="area"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <CheckboxGroup {...field}>
+                      {areaList.map((item: string, index: any) => {
+                        return (
+                          <label htmlFor={item} key={index}>
+                            {item}
+                            <Checkbox
+                              id={index + 1}
+                              value={item}
+                              bg="#fff"
+                              mr="3"
+                              {...register("area")}
+                            />
+                          </label>
+                        );
+                      })}
+                    </CheckboxGroup>
+                  );
+                }}
+              />
             </dl>
           </Box>
           <HStack justify="space-between">

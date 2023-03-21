@@ -61,12 +61,12 @@ const Signin = () => {
 
   return (
     <Layout>
-      <Heading as="h2" mb="10">
+      <Heading as="h2" mb={["5", "10"]} size={["md", "xl"]}>
         <Text align="center">サインイン</Text>
       </Heading>
-      <Box bg="#ccc" p="50px">
+      <Box p={["30px 20px", "50px"]} bg="#AEFFBD">
         <form onSubmit={handleSubmit(onSubmitSignin)}>
-          <Stack spacing={10} mb={20}>
+          <Stack spacing={["5", "10"]} mb={["10", "20"]}>
             <Box>
               <dl>
                 <dt>メールアドレス</dt>
@@ -127,10 +127,10 @@ const Signin = () => {
             <Button
               bg={"#28ADCA"}
               rounded={50}
-              w={"204px"}
-              h={"54px"}
+              w={["140px", "204px"]}
+              h={["40px", "54px"]}
               color={"#F0FCFF"}
-              fontSize="24px"
+              fontSize={["18px", "24px"]}
               type="submit"
             >
               サインイン

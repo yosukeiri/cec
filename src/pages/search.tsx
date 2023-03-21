@@ -46,11 +46,11 @@ const Search = () => {
 
   return (
     <Layout>
-      <Heading as="h2" mb="10">
+      <Heading as="h2" mb={["5", "10"]} size={["md", "xl"]}>
         <Text align="center">学校検索</Text>
       </Heading>
       <SearchArea setSchools={setSchools} />
-      <Box p="50px" bg="#AEFFBD">
+      <Box p={["30px 20px", "50px"]} bg="#AEFFBD">
         <HStack spacing="5" mb="5">
           <Heading as="h3">検索結果</Heading>
           <Text fontSize="3xl">{schools.length}件</Text>

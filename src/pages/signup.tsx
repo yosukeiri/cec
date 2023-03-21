@@ -12,7 +12,7 @@ import Layout from "../Templates/Layout";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
-import { collection, Timestamp, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -41,6 +41,9 @@ const Signup = () => {
           updateProfile(userCredential.user, {
             displayName: data.username,
           });
+          setDoc(doc(db, "userSchool", userCredential.user.uid), {
+            applyFor: [],
+          });
         })
         .then(() => {
           alert(`${data.username}さんのユーザー登録が完了しました。`);
@@ -66,12 +69,12 @@ const Signup = () => {
 
   return (
     <Layout>
-      <Heading as="h2" mb="10">
+      <Heading as="h2" mb={["5", "10"]} size={["md", "xl"]}>
         <Text align="center">サインアップ</Text>
       </Heading>
-      <Box bg="#ccc" p="50px">
+      <Box p={["30px 20px", "50px"]} bg="#AEFFBD">
         <form onSubmit={handleSubmit(onSubmitSignup)}>
-          <Stack spacing={10} mb={20}>
+          <Stack spacing={["5", "10"]} mb={["10", "20"]}>
             <Box>
               <dl>
                 <dt>ユーザー名</dt>
@@ -186,10 +189,10 @@ const Signup = () => {
             <Button
               bg={"#28ADCA"}
               rounded={50}
-              w={"204px"}
-              h={"54px"}
+              w={["140px", "204px"]}
+              h={["40px", "54px"]}
               color={"#F0FCFF"}
-              fontSize="24px"
+              fontSize={["18px", "24px"]}
               type="submit"
             >
               サインイン
