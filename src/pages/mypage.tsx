@@ -28,27 +28,30 @@ const Mypage = () => {
   const [refDoc, setRefDoc] = useState<any>();
   const [data, setData] = useState<DATA>([]);
 
-  // useEffect(() => {
-  //   // 初回レンダリング時はrefをfalseにして、return。
-  //   if (ref.current) {
-  //     ref.current = false;
-  //     return;
-  //   }
-  //   setData(Data);
-  //   setRefDoc(doc(db, "userSchool", user.uid));
-  // }, [user]);
+  useEffect(() => {
+    // 初回レンダリング時はrefをfalseにして、return。
+    if (ref.current) {
+      ref.current = false;
+      return;
+    }
+    if (user) {
+      setData(Data);
+      setRefDoc(doc(db, "userSchool", user.uid));
+    }
+  }, [user]);
 
-  // useEffect(() => {
-  //   const f = async () => {
-  //     const registered_items = await getDoc(refDoc.data().applyFor);
-  //     const registered_schools = data.filter((item) => {
-  //       return registered_items.includes(item.id);
-  //     });
-
-  //     setSchools(registered_schools);
-  //   };
-  //   f();
-  // }, [refDoc]);
+  useEffect(() => {
+    const f = async () => {
+      const registered_items = await getDoc(refDoc);
+      const registered_schools = data.filter((item) => {
+        return registered_items.data().applyFor.includes(item.id);
+      });
+      setSchools(registered_schools);
+    };
+    if (refDoc) {
+      f();
+    }
+  }, [refDoc]);
 
   return (
     <Layout>

@@ -27,9 +27,11 @@ import { db } from "../firebase";
 import { useAuthContext } from "../context/AuthContext";
 
 type DATA = typeof Data;
+
 type PROPS = {
   school: DATA;
 };
+
 const SchoolLine = (props: PROPS) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useAuthContext();
@@ -53,7 +55,9 @@ const SchoolLine = (props: PROPS) => {
       await updateDoc(refDoc, {
         applyFor: arrayUnion(props.school.id),
       }).then(() => {
-        setRefDoc(doc(db, "userSchool", user.uid));
+        if (user) {
+          setRefDoc(doc(db, "userSchool", user.uid));
+        }
       });
     } catch (e) {
       alert(e);
@@ -64,7 +68,9 @@ const SchoolLine = (props: PROPS) => {
       await updateDoc(refDoc, {
         applyFor: arrayRemove(props.school.id),
       }).then(() => {
-        setRefDoc(doc(db, "userSchool", user.uid));
+        if (user) {
+          setRefDoc(doc(db, "userSchool", user.uid));
+        }
       });
     } catch (e) {
       alert(e);

@@ -77,7 +77,11 @@ const areaList = [
   "沖縄県",
 ];
 
-const SearchArea = (props: any) => {
+type PROPS = {
+  setSchools: React.Dispatch<React.SetStateAction<never[]>>;
+};
+
+const SearchArea = (props: PROPS) => {
   const [data, setData] = useState<DATA>([]);
   const { register, handleSubmit, reset, control } = useForm<FormDataSearch>({
     defaultValues: {
@@ -186,46 +190,65 @@ const SearchArea = (props: any) => {
           <Box>
             <dl>
               <dt>エリア</dt>
-              {/* <HStack as="dd" wrap="wrap">
-                {areaList.map((item: string, index: any) => {
-                  return (
-                    <Flex key={index} w="14.2%" align="center" pb="5">
-                      <Checkbox
-                        id={index + 1}
-                        value={item}
-                        bg="#fff"
-                        mr="3"
-                        {...register("area")}
-                      />
-                      <label htmlFor={item}>{item}</label>
-                    </Flex>
-                  );
-                })}
-              </HStack> */}
-              <Controller
-                name="area"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <CheckboxGroup {...field}>
-                      {areaList.map((item: string, index: any) => {
-                        return (
-                          <label htmlFor={item} key={index}>
-                            {item}
-                            <Checkbox
-                              id={index + 1}
-                              value={item}
-                              bg="#fff"
-                              mr="3"
-                              {...register("area")}
-                            />
-                          </label>
-                        );
-                      })}
-                    </CheckboxGroup>
-                  );
-                }}
-              />
+              <dd>
+                <Controller
+                  name="area"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <CheckboxGroup {...field}>
+                        {areaList.map((item: string, index: any) => {
+                          return (
+                            <label htmlFor={item} key={index}>
+                              {item}
+                              <Checkbox
+                                id={index + 1}
+                                value={item}
+                                bg="#fff"
+                                mr="3"
+                                {...register("area")}
+                              />
+                            </label>
+                          );
+                        })}
+                      </CheckboxGroup>
+                    );
+                  }}
+                />
+                {/* <Controller
+                  name="area"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <CheckboxGroup {...field}>
+                        <HStack as="dd" wrap="wrap">
+                          {areaList.map((item: string, index: any) => {
+                            return (
+                              <Flex
+                                as="label"
+                                align="center"
+                                w="14.2%"
+                                pb="5"
+                                htmlFor={item}
+                                key={index}
+                              >
+                                <Checkbox
+                                  id={index + 1}
+                                  value={item}
+                                  bg="#fff"
+                                  mr="3"
+                                  {...register("area")}
+                                />
+                                {item}
+                              </Flex>
+                            );
+                          })}
+                        </HStack>
+                      </CheckboxGroup>
+                    );
+                  }}
+                /> */}
+              </dd>
             </dl>
           </Box>
           <HStack justify="space-between">
