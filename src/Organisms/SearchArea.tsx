@@ -228,8 +228,6 @@ const SearchArea = (props: PROPS) => {
                               pb="5"
                               htmlFor={item}
                               key={index}
-                              htmlFor={item}
-                              key={index}
                             >
                               <Checkbox
                                 id={index + 1}
