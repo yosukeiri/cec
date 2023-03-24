@@ -64,6 +64,7 @@ const SchoolLine = (props: PROPS) => {
   const date04 = new Date(props.school.paymentDeadline);
 
   useEffect(() => {
+    console.log("schoolLine：", "refDoc");
     const f = async () => {
       if (props.refDoc) {
         const registered_items: any = await getDoc(props.refDoc);

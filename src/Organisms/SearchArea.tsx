@@ -107,23 +107,32 @@ const SearchArea = (props: PROPS) => {
     },
   });
 
+  //初回レンダリングにてjsonからデータを抽出
   useEffect(() => {
+    console.log("SearchArea：", "初回");
     setData(Data);
   }, []);
 
+  //検索ボタンをクリック時、フォームの検索条件をもとに検索結果をschoolに代入
   const onSubmitSearch: SubmitHandler<FormDataSearch> = async (condition) => {
     try {
       let result: DATA[] = [...data];
+
+      //自由入力欄の文字列を含有する大学名をもつschoolをresultに代入
       if (condition.freeText) {
         result = result.filter((item: DATA) => {
           return item.schoolName.includes(condition.freeText);
         });
       }
+
+      //チェックされた都道府県を含有するschoolをresultに代入
       if (condition.area.length > 0) {
         result = result.filter((item: DATA) => {
           return condition.area.includes(item.area);
         });
       }
+
+      //入力した出願日時以降の出願日時をもつschoolをresultに代入
       if (condition.applicationTermEnd) {
         result = result.filter((item: DATA) => {
           return (
@@ -132,6 +141,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した試験日時以降の試験日時をもつschoolをresultに代入
       if (condition.ExamTermStart) {
         result = result.filter((item: DATA) => {
           const targetTime = new Date(condition.ExamTermStart);
@@ -141,6 +152,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した試験日時以前の試験日時をもつschoolをresultに代入
       if (condition.ExamTermEnd) {
         result = result.filter((item: DATA) => {
           return (
@@ -149,6 +162,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した発表日時以降の発表日時をもつschoolをresultに代入
       if (condition.announcementTermStart) {
         result = result.filter((item: DATA) => {
           const targetTime = new Date(condition.announcementTermStart);
@@ -158,6 +173,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した発表日時以前の発表日時をもつschoolをresultに代入
       if (condition.announcementTermEnd) {
         result = result.filter((item: DATA) => {
           return (
@@ -166,6 +183,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した入学締切以降の入学締切をもつschoolをresultに代入
       if (condition.paymentTermStart) {
         result = result.filter((item: DATA) => {
           const targetTime = new Date(condition.paymentTermStart);
@@ -175,6 +194,8 @@ const SearchArea = (props: PROPS) => {
           );
         });
       }
+
+      //入力した入学締切以前の入学締切をもつschoolをresultに代入
       if (condition.paymentTermEnd) {
         result = result.filter((item: DATA) => {
           return (
@@ -184,11 +205,13 @@ const SearchArea = (props: PROPS) => {
         });
       }
 
+      //検索結果によって代入されたresultをschoolsにset
       props.setSchools(result);
     } catch (e) {
       //エラーがあったらエラー内容をアラートさせる
       alert(e);
     }
+    //検索条件をリセットする
     reset();
   };
   return (
