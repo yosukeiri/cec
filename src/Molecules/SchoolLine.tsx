@@ -66,7 +66,7 @@ const SchoolLine = (props: PROPS) => {
   useEffect(() => {
     const f = async () => {
       if (props.refDoc) {
-        const registered_items = await getDoc(props.refDoc);
+        const registered_items: any = await getDoc(props.refDoc);
         setRegistered(
           registered_items.data().applyFor.includes(props.school.id)
         );
