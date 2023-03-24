@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, HStack, Text, Heading, VStack } from "@chakra-ui/react";
+import { Box, Text, Heading, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 
 interface TextBox {
@@ -10,7 +10,7 @@ interface TextBox {
 
 const TopTextBox = (props: TextBox) => {
   return (
-    <VStack as="dl" w="32%" spacing="5">
+    <VStack as="dl" w={["100%", "32%"]} spacing="5" mb={["10", "0"]}>
       <Heading as="dt">
         <Text fontSize="18px" align="center">
           {props.title}

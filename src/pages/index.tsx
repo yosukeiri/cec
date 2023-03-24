@@ -1,10 +1,11 @@
-import { Box, HStack, Text, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text, Heading } from "@chakra-ui/react";
 import Layout from "../Templates/Layout";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper";
 import "swiper/css";
 import Image from "next/image";
 import TopTextBox from "../Molecules/TopTextBox";
+import style from "../../styles/style.module.css";
 
 export default function Home() {
   return (
@@ -18,33 +19,27 @@ export default function Home() {
           effect="fade"
           modules={[Autoplay, EffectFade]}
         >
-          <SwiperSlide
-            style={{ position: "relative", width: "100%", height: "500px" }}
-          >
+          <SwiperSlide className={style.slide}>
             <Image
               src="/top/slider01.jpg"
-              fill
               alt=""
+              fill
               style={{ objectFit: "cover" }}
             />
           </SwiperSlide>
-          <SwiperSlide
-            style={{ position: "relative", width: "100%", height: "500px" }}
-          >
+          <SwiperSlide className={style.slide}>
             <Image
               src="/top/slider02.jpg"
-              fill
               alt=""
+              fill
               style={{ objectFit: "cover" }}
             />
           </SwiperSlide>
-          <SwiperSlide
-            style={{ position: "relative", width: "100%", height: "500px" }}
-          >
+          <SwiperSlide className={style.slide}>
             <Image
               src="/top/slider03.jpg"
-              fill
               alt=""
+              fill
               style={{ objectFit: "cover" }}
             />
           </SwiperSlide>
@@ -54,7 +49,7 @@ export default function Home() {
         <Heading as="h2" mb="10">
           <Text align="center">受験カレンダーとは</Text>
         </Heading>
-        <HStack w="100%" justify="space-between">
+        <Flex w="100%" justify="space-between" wrap={["wrap"]}>
           <TopTextBox
             title="自分が受けられる私大が見つかる"
             image="/top/img01.jpg"
@@ -70,7 +65,7 @@ export default function Home() {
             image="/top/img03.jpg"
             text="テキストダミーテキストダミーテキストダミーテキストダミー"
           />
-        </HStack>
+        </Flex>
       </Box>
     </Layout>
   );

@@ -1,0 +1,23 @@
+.slide {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+@media screen and (max-width: 767px) {
+  .slide {
+    position: relative;
+    width: 100%;
+    height: 250px;
+  }
+}
+
+.tbody {
+  width: 923px;
+  display: block;
+}
+
+.tr {
+  width: 923px;
+  display: table;
+}

@@ -13,7 +13,7 @@ const Header = () => {
           py="20px"
         >
           <Heading as="h1" size={["sm", "md", "xl"]}>
-            <Link href="/">大学受験カレンダー</Link>
+            <Link href="/">受験カレンダー</Link>
           </Heading>
           <Spacer />
           <Navigation />

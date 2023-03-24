@@ -14,10 +14,28 @@ import {
 } from "@chakra-ui/react";
 import Data from "../../data.json";
 
-type DATA = typeof Data;
+type DATA = {
+  id: number;
+  schoolName: string;
+  applicationDeadline: string;
+  entranceExamDate: string;
+  announcementDate: string;
+  paymentDeadline: string;
+  area: string;
+  subjects: {
+    s01: boolean;
+    s02: boolean;
+    s03: boolean;
+    s04: boolean;
+    s05: boolean;
+  };
+  image: string;
+  title: string;
+  text: string;
+};
 type FormDataSearch = {
   freeText: string;
-  area: any;
+  area: string[];
   applicationTermEnd: string;
   ExamTermStart: string;
   ExamTermEnd: string;
@@ -78,11 +96,11 @@ const areaList = [
 ];
 
 type PROPS = {
-  setSchools: React.Dispatch<React.SetStateAction<never[]>>;
+  setSchools: any;
 };
 
 const SearchArea = (props: PROPS) => {
-  const [data, setData] = useState<DATA>([]);
+  const [data, setData] = useState<DATA[]>([]);
   const { register, handleSubmit, reset, control } = useForm<FormDataSearch>({
     defaultValues: {
       area: [],
@@ -95,19 +113,19 @@ const SearchArea = (props: PROPS) => {
 
   const onSubmitSearch: SubmitHandler<FormDataSearch> = async (condition) => {
     try {
-      let result: DATA = [...data];
+      let result: DATA[] = [...data];
       if (condition.freeText) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return item.schoolName.includes(condition.freeText);
         });
       }
       if (condition.area.length > 0) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return condition.area.includes(item.area);
         });
       }
       if (condition.applicationTermEnd) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return (
             new Date(condition.applicationTermEnd).getTime() >=
             new Date(item.applicationDeadline).getTime()
@@ -115,15 +133,16 @@ const SearchArea = (props: PROPS) => {
         });
       }
       if (condition.ExamTermStart) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
+          const targetTime = new Date(condition.ExamTermStart);
+          targetTime.setHours(0);
           return (
-            new Date(condition.ExamTermStart).getTime() <=
-            new Date(item.entranceExamDate).getTime()
+            targetTime.getTime() <= new Date(item.entranceExamDate).getTime()
           );
         });
       }
       if (condition.ExamTermEnd) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return (
             new Date(condition.ExamTermEnd).getTime() >=
             new Date(item.entranceExamDate).getTime()
@@ -131,15 +150,16 @@ const SearchArea = (props: PROPS) => {
         });
       }
       if (condition.announcementTermStart) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
+          const targetTime = new Date(condition.announcementTermStart);
+          targetTime.setHours(0);
           return (
-            new Date(condition.announcementTermStart).getTime() <=
-            new Date(item.announcementDate).getTime()
+            targetTime.getTime() <= new Date(item.announcementDate).getTime()
           );
         });
       }
       if (condition.announcementTermEnd) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return (
             new Date(condition.announcementTermEnd).getTime() >=
             new Date(item.announcementDate).getTime()
@@ -147,21 +167,23 @@ const SearchArea = (props: PROPS) => {
         });
       }
       if (condition.paymentTermStart) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
+          const targetTime = new Date(condition.paymentTermStart);
+          targetTime.setHours(0);
           return (
-            new Date(condition.paymentTermStart).getTime() <=
-            new Date(item.paymentDeadline).getTime()
+            targetTime.getTime() <= new Date(item.paymentDeadline).getTime()
           );
         });
       }
       if (condition.paymentTermEnd) {
-        result = result.filter((item: any) => {
+        result = result.filter((item: DATA) => {
           return (
             new Date(condition.paymentTermEnd).getTime() >=
             new Date(item.paymentDeadline).getTime()
           );
         });
       }
+
       props.setSchools(result);
     } catch (e) {
       //エラーがあったらエラー内容をアラートさせる
@@ -170,9 +192,9 @@ const SearchArea = (props: PROPS) => {
     reset();
   };
   return (
-    <Box bg="#AEFFBD" p="50px" mb="10">
+    <Box bg="#AEFFBD" p={["30px 20px", "50px"]} mb="10">
       <form onSubmit={handleSubmit(onSubmitSearch)}>
-        <Stack spacing={10} mb={20}>
+        <Stack spacing={["5", "10"]} mb={20}>
           <Box>
             <dl>
               <dt>自由検索</dt>
@@ -190,69 +212,45 @@ const SearchArea = (props: PROPS) => {
           <Box>
             <dl>
               <dt>エリア</dt>
-              <dd>
-                <Controller
-                  name="area"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <CheckboxGroup {...field}>
-                        {areaList.map((item: string, index: any) => {
+              <Controller
+                name="area"
+                control={control}
+                render={({ field: { ref, value, onChange } }) => {
+                  return (
+                    <CheckboxGroup value={value} onChange={onChange}>
+                      <HStack as="dd" wrap="wrap">
+                        {areaList.map((item: string, index: number) => {
                           return (
-                            <label htmlFor={item} key={index}>
-                              {item}
+                            <Flex
+                              as="label"
+                              align="center"
+                              w={["33%", "14.2%"]}
+                              pb="5"
+                              htmlFor={item}
+                              key={index}
+                              htmlFor={item}
+                              key={index}
+                            >
                               <Checkbox
                                 id={index + 1}
                                 value={item}
                                 bg="#fff"
                                 mr="3"
-                                {...register("area")}
+                                ref={ref}
                               />
-                            </label>
+                              {item}
+                            </Flex>
                           );
                         })}
-                      </CheckboxGroup>
-                    );
-                  }}
-                />
-                {/* <Controller
-                  name="area"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <CheckboxGroup {...field}>
-                        <HStack as="dd" wrap="wrap">
-                          {areaList.map((item: string, index: any) => {
-                            return (
-                              <Flex
-                                as="label"
-                                align="center"
-                                w="14.2%"
-                                pb="5"
-                                htmlFor={item}
-                                key={index}
-                              >
-                                <Checkbox
-                                  id={index + 1}
-                                  value={item}
-                                  bg="#fff"
-                                  mr="3"
-                                  {...register("area")}
-                                />
-                                {item}
-                              </Flex>
-                            );
-                          })}
-                        </HStack>
-                      </CheckboxGroup>
-                    );
-                  }}
-                /> */}
-              </dd>
+                      </HStack>
+                    </CheckboxGroup>
+                  );
+                }}
+              />
             </dl>
           </Box>
-          <HStack justify="space-between">
-            <Box w="48%">
+          <Flex justify="space-between" wrap="wrap">
+            <Box w={["100%", "48%"]} mb={["5", "0"]}>
               <dl>
                 <dt>出願締切</dt>
                 <HStack as="dd" justify="space-between">
@@ -267,7 +265,7 @@ const SearchArea = (props: PROPS) => {
                 </HStack>
               </dl>
             </Box>
-            <Box w="48%">
+            <Box w={["100%", "48%"]} mb={["5", "0"]}>
               <dl>
                 <dt>入試日</dt>
                 <HStack as="dd" justify="space-between">
@@ -289,9 +287,9 @@ const SearchArea = (props: PROPS) => {
                 </HStack>
               </dl>
             </Box>
-          </HStack>
-          <HStack justify="space-between">
-            <Box w="48%">
+          </Flex>
+          <Flex justify="space-between" wrap="wrap">
+            <Box w={["100%", "48%"]} mb={["5", "0"]}>
               <dl>
                 <dt>合格発表日</dt>
                 <HStack as="dd" justify="space-between">
@@ -313,7 +311,7 @@ const SearchArea = (props: PROPS) => {
                 </HStack>
               </dl>
             </Box>
-            <Box w="48%">
+            <Box w={["100%", "48%"]} mb={["5", "0"]}>
               <dl>
                 <dt>入学締切日</dt>
                 <HStack as="dd" justify="space-between">
@@ -335,7 +333,7 @@ const SearchArea = (props: PROPS) => {
                 </HStack>
               </dl>
             </Box>
-          </HStack>
+          </Flex>
         </Stack>
         <Center>
           <Button

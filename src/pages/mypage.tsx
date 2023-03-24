@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Heading,
   Text,
-  HStack,
   Table,
   Thead,
   Tbody,
@@ -12,37 +11,59 @@ import {
 } from "@chakra-ui/react";
 import SchoolLine from "../Molecules/SchoolLine";
 import Layout from "../Templates/Layout";
-import Schedule from "../Molecules/Schedule";
+import Schedules from "../Molecules/Schedules";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Data from "../../data.json";
 import { useAuthContext } from "../context/AuthContext";
+import style from "../../styles/style.module.css";
 
-type DATA = typeof Data;
+type DATA = {
+  id: number;
+  schoolName: string;
+  applicationDeadline: string;
+  entranceExamDate: string;
+  announcementDate: string;
+  paymentDeadline: string;
+  area: string;
+  subjects: {
+    s01: boolean;
+    s02: boolean;
+    s03: boolean;
+    s04: boolean;
+    s05: boolean;
+  };
+  image: string;
+  title: string;
+  text: string;
+};
 
 const Mypage = () => {
   const { user } = useAuthContext();
-  const ref = useRef(true);
-
-  const [schools, setSchools] = useState([]);
+  const [schools, setSchools] = useState<DATA[]>([]);
   const [refDoc, setRefDoc] = useState<any>();
-  const [data, setData] = useState<DATA>([]);
+  const [data, setData] = useState<DATA[]>([]);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   useEffect(() => {
-    // 初回レンダリング時はrefをfalseにして、return。
-    if (ref.current) {
-      ref.current = false;
-      return;
-    }
+    console.log("mypage：", "user");
     if (user) {
       setData(Data);
       setRefDoc(doc(db, "userSchool", user.uid));
     }
   }, [user]);
+  useEffect(() => {
+    console.log("mypage：", "isEdit");
+    if (user) {
+      setData(Data);
+      setRefDoc(doc(db, "userSchool", user.uid));
+    }
+  }, [isEdit]);
 
   useEffect(() => {
+    console.log("mypage：", "refDoc");
     const f = async () => {
-      const registered_items = await getDoc(refDoc);
+      const registered_items: any = await getDoc(refDoc);
       const registered_schools = data.filter((item) => {
         return registered_items.data().applyFor.includes(item.id);
       });
@@ -56,37 +77,61 @@ const Mypage = () => {
   return (
     <Layout>
       <Heading as="h2" mb={["5", "10"]} size={["md", "xl"]}>
-        <Text align="center">マイページ</Text>
+        <Text align="center">{user?.displayName}さんのマイページ</Text>
       </Heading>
       <Box p={["30px 20px", "50px"]} bg="#AEFFBD" mb="10">
-        <Heading as="h3" mb="5">
+        <Heading as="h3" mb="5" fontSize={["md", "xl"]}>
           入試予定校一覧
         </Heading>
-        <Table variant="striped" colorScheme="linkedin">
-          <Thead>
-            <Tr>
-              <Th>大学名</Th>
-              <Th>出願締切</Th>
-              <Th>入試日</Th>
-              <Th>合格発表日</Th>
-              <Th>入学締切日</Th>
-              <Th></Th>
-              <Th></Th>
+        <Table
+          variant="striped"
+          colorScheme="linkedin"
+          style={{ overflow: "scroll", width: "100%", display: "block" }}
+        >
+          <Thead style={{ width: "923px", display: "block" }}>
+            <Tr className={style.tr}>
+              <Th style={{ width: "16%" }}>大学名</Th>
+              <Th style={{ width: "10%" }}>
+                <Text align="center">都道府県</Text>
+              </Th>
+              <Th style={{ width: "10%" }}>
+                <Text align="center">出願締切</Text>
+              </Th>
+              <Th style={{ width: "10%" }}>
+                <Text align="center">入試日</Text>
+              </Th>
+              <Th style={{ width: "10%" }}>
+                <Text align="center">合格発表</Text>
+              </Th>
+              <Th style={{ width: "10%" }}>
+                <Text align="center">入学締切</Text>
+              </Th>
+              <Th style={{ width: "12%" }}></Th>
+              <Th style={{ width: "12%" }}></Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody style={{ width: "923px", display: "block" }}>
             {schools &&
               schools.map((item: DATA) => {
-                return <SchoolLine key={item.id} school={item} />;
+                return (
+                  <SchoolLine
+                    key={item.id}
+                    school={item}
+                    schools={schools}
+                    setIsEdit={setIsEdit}
+                    refDoc={refDoc}
+                    setRefDoc={setRefDoc}
+                  />
+                );
               })}
           </Tbody>
         </Table>
       </Box>
-      <Box p="50px" bg="#AEFFBD">
-        <Heading as="h3" mb="5">
+      <Box p={["30px 20px", "50px"]} bg="#AEFFBD">
+        <Heading as="h3" mb="5" fontSize={["md", "xl"]}>
           入試スケジュール
         </Heading>
-        <Schedule />
+        <Schedules schools={schools} />
       </Box>
     </Layout>
   );

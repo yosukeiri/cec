@@ -1,4 +1,4 @@
-import { Button, HStack, Spacer } from "@chakra-ui/react";
+import { Button, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -28,21 +28,27 @@ const Navigation = () => {
     }
     if (user) {
       if (router.pathname === "/signup" || router.pathname === "/signin") {
-        // router.push("/");
+        router.push("/search");
       }
     } else {
       if (router.pathname !== "/signup" && router.pathname !== "/signin") {
-        // router.push("/signin");
+        router.push("/signin");
       }
     }
   }, [user]);
   return (
     <>
       {user ? (
-        <HStack w={["100%", "450px"]} spacing="5" justify="end">
-          <Link href="/mypage">マイページ</Link>
-          <Link href="/search">学校検索</Link>
-          <Button onClick={signout}>サインアウト</Button>
+        <HStack w={["250px", "450px"]} spacing="5" justify="end">
+          <Link href="/mypage">
+            <Text fontSize={["xs", "sm", "md"]}>マイページ</Text>
+          </Link>
+          <Link href="/search">
+            <Text fontSize={["xs", "sm", "md"]}>学校検索</Text>
+          </Link>
+          <Button onClick={signout} size={["xs", "sm", "md"]}>
+            サインアウト
+          </Button>
         </HStack>
       ) : (
         <HStack w={["170px", "250px"]} spacing={["2", "5"]} justify="end">

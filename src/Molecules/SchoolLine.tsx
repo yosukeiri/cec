@@ -26,17 +26,38 @@ import {
 import { db } from "../firebase";
 import { useAuthContext } from "../context/AuthContext";
 
-type DATA = typeof Data;
+type DATA = {
+  id: number;
+  schoolName: string;
+  applicationDeadline: string;
+  entranceExamDate: string;
+  announcementDate: string;
+  paymentDeadline: string;
+  area: string;
+  subjects: {
+    s01: boolean;
+    s02: boolean;
+    s03: boolean;
+    s04: boolean;
+    s05: boolean;
+  };
+  image: string;
+  title: string;
+  text: string;
+};
 
 type PROPS = {
+  schools: DATA[];
   school: DATA;
+  setIsEdit: any;
+  refDoc: any;
+  setRefDoc: any;
 };
 
 const SchoolLine = (props: PROPS) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useAuthContext();
-  const [registered, setRegistered] = useState(false);
-  const [refDoc, setRefDoc] = useState(doc(db, "userSchool", user.uid));
+  const [registered, setRegistered] = useState<boolean | null>(false);
   const date01 = new Date(props.school.applicationDeadline);
   const date02 = new Date(props.school.entranceExamDate);
   const date03 = new Date(props.school.announcementDate);
@@ -44,19 +65,23 @@ const SchoolLine = (props: PROPS) => {
 
   useEffect(() => {
     const f = async () => {
-      const registered_items = await getDoc(refDoc);
-      setRegistered(registered_items.data().applyFor.includes(props.school.id));
+      if (props.refDoc) {
+        const registered_items = await getDoc(props.refDoc);
+        setRegistered(
+          registered_items.data().applyFor.includes(props.school.id)
+        );
+      }
     };
     f();
-  }, [refDoc]);
+  }, [props.refDoc]);
 
   const schoolRegister = async () => {
     try {
-      await updateDoc(refDoc, {
+      await updateDoc(props.refDoc, {
         applyFor: arrayUnion(props.school.id),
       }).then(() => {
         if (user) {
-          setRefDoc(doc(db, "userSchool", user.uid));
+          props.setRefDoc(doc(db, "userSchool", user.uid));
         }
       });
     } catch (e) {
@@ -65,11 +90,12 @@ const SchoolLine = (props: PROPS) => {
   };
   const schoolRemove = async () => {
     try {
-      await updateDoc(refDoc, {
+      await updateDoc(props.refDoc, {
         applyFor: arrayRemove(props.school.id),
       }).then(() => {
         if (user) {
-          setRefDoc(doc(db, "userSchool", user.uid));
+          props.setRefDoc(doc(db, "userSchool", user.uid));
+          props.setIsEdit(true);
         }
       });
     } catch (e) {
@@ -79,36 +105,36 @@ const SchoolLine = (props: PROPS) => {
   return (
     <>
       <Tr>
-        <Td>{props.school.schoolName}</Td>
-        <Td>
+        <Td style={{ width: "16%" }}>{props.school.schoolName}</Td>
+        <Td style={{ width: "10%" }}>
           <Text align="center">{props.school.area}</Text>
         </Td>
-        <Td>
+        <Td style={{ width: "10%" }}>
           <Text align="center">
             {date01.getMonth() + 1}/{date01.getDate()}
           </Text>
         </Td>
-        <Td>
+        <Td style={{ width: "10%" }}>
           <Text align="center">
             {date02.getMonth() + 1}/{date02.getDate()}
           </Text>
         </Td>
-        <Td>
+        <Td style={{ width: "10%" }}>
           <Text align="center">
             {date03.getMonth() + 1}/{date03.getDate()}
           </Text>
         </Td>
-        <Td>
+        <Td style={{ width: "10%" }}>
           <Text align="center">
             {date04.getMonth() + 1}/{date04.getDate()}
           </Text>
         </Td>
-        <Td>
+        <Td style={{ width: "12%" }}>
           <Button colorScheme="blue" onClick={onOpen}>
             詳細
           </Button>
         </Td>
-        <Td>
+        <Td style={{ width: "12%" }}>
           {registered ? (
             <Button colorScheme="orange" onClick={schoolRemove}>
               削除

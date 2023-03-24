@@ -32,12 +32,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       if (user) {
         setUser(user);
         if (router.pathname === "/signup" || router.pathname === "/signin") {
-          // router.push("/");
+          router.push("/search");
         }
       } else {
         setUser(null);
         if (router.pathname !== "/signup" || "/sigin" || "/") {
-          // router.push("/signin");
+          router.push("/signin");
         }
       }
     });
