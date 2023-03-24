@@ -219,7 +219,7 @@ const SearchArea = (props: PROPS) => {
                   return (
                     <CheckboxGroup value={value} onChange={onChange}>
                       <HStack as="dd" wrap="wrap">
-                        {areaList.map((item: string) => {
+                        {areaList.map((item: string, index: number) => {
                           return (
                             <Flex
                               as="label"
