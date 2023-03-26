@@ -16,7 +16,7 @@ import SearchArea from "../Organisms/SearchArea";
 import style from "../../styles/style.module.css";
 import { useAuthContext } from "../context/AuthContext";
 import Data from "../../data.json";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, DocumentData, DocumentReference, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 type DATA = {
@@ -42,7 +42,7 @@ type DATA = {
 const Search = () => {
   const { user } = useAuthContext();
   const [schools, setSchools] = useState<DATA[]>([]);
-  const [refDoc, setRefDoc] = useState<any>();
+  const [refDoc, setRefDoc] = useState<DocumentReference<DocumentData> | undefined>(undefined);
   const [data, setData] = useState<DATA[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
