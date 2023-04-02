@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   Button,
   Tr,
@@ -22,9 +22,13 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  DocumentSnapshot,
+  DocumentReference,
+  DocumentData,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAuthContext } from "../context/AuthContext";
+import { ApplyFor } from "../pages/mypage";
 
 type DATA = {
   id: number;
@@ -49,9 +53,9 @@ type DATA = {
 type PROPS = {
   schools: DATA[];
   school: DATA;
-  setIsEdit: any;
-  refDoc: any;
-  setRefDoc: any;
+  setIsEdit: Dispatch<SetStateAction<boolean>>;
+  refDoc?: DocumentReference<DocumentData>;
+  setRefDoc: Dispatch<SetStateAction<DocumentReference<DocumentData> | undefined>>;
 };
 
 const SchoolLine = (props: PROPS) => {
@@ -63,22 +67,28 @@ const SchoolLine = (props: PROPS) => {
   const date03 = new Date(props.school.announcementDate);
   const date04 = new Date(props.school.paymentDeadline);
 
+  const refDoc = props.refDoc
+
   useEffect(() => {
     console.log("schoolLine：", "refDoc");
     const f = async () => {
-      if (props.refDoc) {
-        const registered_items: any = await getDoc(props.refDoc);
+
+      if (refDoc) {
+        const registeredData = await getDoc(refDoc) as DocumentSnapshot<ApplyFor>;
+        const registeredItem = registeredData.data()
+        if (!registeredItem) return
         setRegistered(
-          registered_items.data().applyFor.includes(props.school.id)
+          registeredItem.applyFor.includes(props.school.id)
         );
       }
     };
     f();
-  }, [props.refDoc]);
+  }, [refDoc, user]);
 
   const schoolRegister = async () => {
+    if (!refDoc) return
     try {
-      await updateDoc(props.refDoc, {
+      await updateDoc(refDoc, {
         applyFor: arrayUnion(props.school.id),
       }).then(() => {
         if (user) {
@@ -90,8 +100,9 @@ const SchoolLine = (props: PROPS) => {
     }
   };
   const schoolRemove = async () => {
+    if (!refDoc) return
     try {
-      await updateDoc(props.refDoc, {
+      await updateDoc(refDoc, {
         applyFor: arrayRemove(props.school.id),
       }).then(() => {
         if (user) {

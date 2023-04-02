@@ -1,18 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
 import SchoolLine from "../Molecules/SchoolLine";
 import Layout from "../Templates/Layout";
 import Schedules from "../Molecules/Schedules";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, DocumentData, DocumentReference, DocumentSnapshot, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Data from "../../data.json";
 import { useAuthContext } from "../context/AuthContext";
@@ -38,10 +29,14 @@ type DATA = {
   text: string;
 };
 
+export type ApplyFor = {
+  applyFor: number[];
+};
+
 const Mypage = () => {
   const { user } = useAuthContext();
   const [schools, setSchools] = useState<DATA[]>([]);
-  const [refDoc, setRefDoc] = useState<any>();
+  const [refDoc, setRefDoc] = useState<DocumentReference<DocumentData>>();
   const [data, setData] = useState<DATA[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
@@ -52,6 +47,7 @@ const Mypage = () => {
       setRefDoc(doc(db, "userSchool", user.uid));
     }
   }, [user]);
+
   useEffect(() => {
     console.log("mypage：", "isEdit");
     if (user) {
@@ -62,15 +58,17 @@ const Mypage = () => {
 
   useEffect(() => {
     console.log("mypage：", "refDoc");
-    const f = async () => {
-      const registered_items: any = await getDoc(refDoc);
+    const getApplyFor = async (refDoc: DocumentReference<DocumentData>) => {
+      const registered_items = (await getDoc(refDoc)) as DocumentSnapshot<ApplyFor>;
       const registered_schools = data.filter((item) => {
-        return registered_items.data().applyFor.includes(item.id);
+        const registeredItem = registered_items.data();
+        if (registeredItem === undefined) return;
+        return registeredItem.applyFor.includes(item.id);
       });
       setSchools(registered_schools);
     };
     if (refDoc) {
-      f();
+      getApplyFor(refDoc);
     }
   }, [refDoc]);
 
@@ -83,11 +81,7 @@ const Mypage = () => {
         <Heading as="h3" mb="5" fontSize={["md", "xl"]}>
           入試予定校一覧
         </Heading>
-        <Table
-          variant="striped"
-          colorScheme="linkedin"
-          style={{ overflow: "scroll", width: "100%", display: "block" }}
-        >
+        <Table variant="striped" colorScheme="linkedin" style={{ overflow: "scroll", width: "100%", display: "block" }}>
           <Thead style={{ width: "923px", display: "block" }}>
             <Tr className={style.tr}>
               <Th style={{ width: "16%" }}>大学名</Th>

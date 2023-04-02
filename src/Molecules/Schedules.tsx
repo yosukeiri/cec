@@ -27,6 +27,7 @@ type PROPS = {
   schools: DATA[];
 };
 
+// Scheduleコンポーネントが44回使われている
 const Schedules = (props: PROPS) => {
   return (
     <>

@@ -96,7 +96,7 @@ const areaList = [
 ];
 
 type PROPS = {
-  setSchools: any;
+  setSchools: React.Dispatch<React.SetStateAction<DATA[]>>;
 };
 
 const SearchArea = (props: PROPS) => {
