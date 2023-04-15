@@ -16,7 +16,12 @@ import SearchArea from "../Organisms/SearchArea";
 import style from "../../styles/style.module.css";
 import { useAuthContext } from "../context/AuthContext";
 import Data from "../../data.json";
-import { doc, DocumentData, DocumentReference, getDoc } from "firebase/firestore";
+import {
+  doc,
+  DocumentData,
+  DocumentReference,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 type DATA = {
@@ -42,19 +47,21 @@ type DATA = {
 const Search = () => {
   const { user } = useAuthContext();
   const [schools, setSchools] = useState<DATA[]>([]);
-  const [refDoc, setRefDoc] = useState<DocumentReference<DocumentData> | undefined>(undefined);
+  const [refDoc, setRefDoc] = useState<
+    DocumentReference<DocumentData> | undefined
+  >(undefined);
   const [data, setData] = useState<DATA[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("search：", "user");
+    // 初回ユーザー認証後にjsonデータからデータ取得
     if (user) {
       setData(Data);
       setRefDoc(doc(db, "userSchool", user.uid));
     }
   }, [user]);
   useEffect(() => {
-    console.log("search：", "isEdit");
+    // 編集後にjsonデータからデータ取得
     if (user) {
       setData(Data);
       setRefDoc(doc(db, "userSchool", user.uid));

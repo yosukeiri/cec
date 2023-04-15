@@ -26,6 +26,7 @@ const Signin = () => {
     formState: { errors },
   } = useForm<FormDataSignin>();
 
+  //firebase宛にemail、passwordを送り、サインインをする
   const onSubmitSignin: SubmitHandler<FormDataSignin> = async (data) => {
     try {
       //firebase宛にemail、passwordを送り、ログイン認証をする。

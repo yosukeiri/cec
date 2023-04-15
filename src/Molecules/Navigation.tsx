@@ -11,6 +11,7 @@ const Navigation = () => {
   const { user } = useAuthContext();
   const ref = useRef(true);
 
+  // サインアウトボタンからfirebaseでサインアウト
   const signout = () => {
     signOut(auth)
       .then(() => {
@@ -21,11 +22,12 @@ const Navigation = () => {
       });
   };
   useEffect(() => {
-    // 初回レンダリング時はrefをfalseにして、return。
+    // 初回レンダリング時はrefをfalseにして、return
     if (ref.current) {
       ref.current = false;
       return;
     }
+    // ２回目レンダリングでログイン認証からのリダイレクト処理
     if (user) {
       if (router.pathname === "/signup" || router.pathname === "/signin") {
         router.push("/search");

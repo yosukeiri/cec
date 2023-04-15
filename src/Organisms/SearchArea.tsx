@@ -109,7 +109,6 @@ const SearchArea = (props: PROPS) => {
 
   //初回レンダリングにてjsonからデータを抽出
   useEffect(() => {
-    console.log("SearchArea：", "初回");
     setData(Data);
   }, []);
 

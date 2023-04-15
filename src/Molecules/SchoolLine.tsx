@@ -55,7 +55,9 @@ type PROPS = {
   school: DATA;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
   refDoc?: DocumentReference<DocumentData>;
-  setRefDoc: Dispatch<SetStateAction<DocumentReference<DocumentData> | undefined>>;
+  setRefDoc: Dispatch<
+    SetStateAction<DocumentReference<DocumentData> | undefined>
+  >;
 };
 
 const SchoolLine = (props: PROPS) => {
@@ -67,26 +69,26 @@ const SchoolLine = (props: PROPS) => {
   const date03 = new Date(props.school.announcementDate);
   const date04 = new Date(props.school.paymentDeadline);
 
-  const refDoc = props.refDoc
+  const refDoc = props.refDoc;
 
   useEffect(() => {
-    console.log("schoolLine：", "refDoc");
+    // fireabeseからデータ取得し、schollのidと合致する場合registerをtrueに
     const f = async () => {
-
       if (refDoc) {
-        const registeredData = await getDoc(refDoc) as DocumentSnapshot<ApplyFor>;
-        const registeredItem = registeredData.data()
-        if (!registeredItem) return
-        setRegistered(
-          registeredItem.applyFor.includes(props.school.id)
-        );
+        const registeredData = (await getDoc(
+          refDoc
+        )) as DocumentSnapshot<ApplyFor>;
+        const registeredItem = registeredData.data();
+        if (!registeredItem) return;
+        setRegistered(registeredItem.applyFor.includes(props.school.id));
       }
     };
     f();
   }, [refDoc, user]);
 
+  // 登録ボタンによってfirebaseのuserSchoolに登録
   const schoolRegister = async () => {
-    if (!refDoc) return
+    if (!refDoc) return;
     try {
       await updateDoc(refDoc, {
         applyFor: arrayUnion(props.school.id),
@@ -99,8 +101,9 @@ const SchoolLine = (props: PROPS) => {
       alert(e);
     }
   };
+  // 削除ボタンによってfirebaseのuserSchoolから削除
   const schoolRemove = async () => {
-    if (!refDoc) return
+    if (!refDoc) return;
     try {
       await updateDoc(refDoc, {
         applyFor: arrayRemove(props.school.id),

@@ -1,9 +1,24 @@
 import { useState, useEffect } from "react";
-import { Box, Heading, Text, Table, Thead, Tbody, Tr, Th } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+} from "@chakra-ui/react";
 import SchoolLine from "../Molecules/SchoolLine";
 import Layout from "../Templates/Layout";
 import Schedules from "../Molecules/Schedules";
-import { doc, DocumentData, DocumentReference, DocumentSnapshot, getDoc } from "firebase/firestore";
+import {
+  doc,
+  DocumentData,
+  DocumentReference,
+  DocumentSnapshot,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import Data from "../../data.json";
 import { useAuthContext } from "../context/AuthContext";
@@ -40,26 +55,28 @@ const Mypage = () => {
   const [data, setData] = useState<DATA[]>([]);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  // useAuthContextからuserがセットされ次第、DataとrefDocをセット
   useEffect(() => {
-    console.log("mypage：", "user");
     if (user) {
       setData(Data);
       setRefDoc(doc(db, "userSchool", user.uid));
     }
   }, [user]);
 
+  // isEditが更新され次第、DataとrefDocを再度セット
   useEffect(() => {
-    console.log("mypage：", "isEdit");
     if (user) {
       setData(Data);
       setRefDoc(doc(db, "userSchool", user.uid));
     }
   }, [isEdit]);
 
+  // refDocが更新され次第、登録済みの大学を抽出そschoolsにセット
   useEffect(() => {
-    console.log("mypage：", "refDoc");
     const getApplyFor = async (refDoc: DocumentReference<DocumentData>) => {
-      const registered_items = (await getDoc(refDoc)) as DocumentSnapshot<ApplyFor>;
+      const registered_items = (await getDoc(
+        refDoc
+      )) as DocumentSnapshot<ApplyFor>;
       const registered_schools = data.filter((item) => {
         const registeredItem = registered_items.data();
         if (registeredItem === undefined) return;
@@ -81,7 +98,11 @@ const Mypage = () => {
         <Heading as="h3" mb="5" fontSize={["md", "xl"]}>
           入試予定校一覧
         </Heading>
-        <Table variant="striped" colorScheme="linkedin" style={{ overflow: "scroll", width: "100%", display: "block" }}>
+        <Table
+          variant="striped"
+          colorScheme="linkedin"
+          style={{ overflow: "scroll", width: "100%", display: "block" }}
+        >
           <Thead style={{ width: "923px", display: "block" }}>
             <Tr className={style.tr}>
               <Th style={{ width: "16%" }}>大学名</Th>

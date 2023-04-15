@@ -35,8 +35,7 @@ const Schedule = (props: PROPS) => {
   const [matchSchools04, setMatchSchools04] = useState<DATA[]>([]);
 
   useEffect(() => {
-    console.log("schedule：", "schools");
-
+    // schoolsから申し込み期限でフィルター処理して大学名を抽出し、matchSchoole01にセット
     setMatchSchools01(
       schools.filter((item: DATA) => {
         return (
@@ -45,7 +44,7 @@ const Schedule = (props: PROPS) => {
         );
       })
     );
-
+    // schoolsから入試日でフィルター処理して大学名を抽出し、matchSchoole02にセット
     setMatchSchools02(
       schools.filter((item: DATA) => {
         return (
@@ -54,6 +53,7 @@ const Schedule = (props: PROPS) => {
         );
       })
     );
+    // schoolsから合格発表日でフィルター処理して大学名を抽出し、matchSchoole03にセット
     setMatchSchools03(
       schools.filter((item: DATA) => {
         return (
@@ -62,6 +62,7 @@ const Schedule = (props: PROPS) => {
         );
       })
     );
+    // schoolsから入学金支払い期限でフィルター処理して大学名を抽出し、matchSchoole04にセット
     setMatchSchools04(
       schools.filter((item: DATA) => {
         return (

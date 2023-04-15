@@ -195,7 +195,7 @@ const Signup = () => {
               fontSize={["18px", "24px"]}
               type="submit"
             >
-              サインイン
+              サインアップ
             </Button>
           </Center>
         </form>
